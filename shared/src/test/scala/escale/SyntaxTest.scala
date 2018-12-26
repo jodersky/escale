@@ -30,8 +30,8 @@ object SyntaxTest extends TestSuite {
         val Ch1 = chan[Int]()
         val Ch2 = chan[Int]()
 
-        go {/*Thread.sleep(1);*/ Ch1 !< 1}
-        go {/*Thread.sleep(1);*/ Ch2 !< 1}
+        go {Thread.sleep(1); Ch1 !< 1}
+        go {Thread.sleep(1); Ch2 !< 1}
 
         select(Ch1, Ch2) match {
           case (Ch1, _) => "ch1 was first"

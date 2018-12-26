@@ -21,7 +21,7 @@ object Main extends App {
 
   val p2 = async {
     var a = 0
-    while ({a = await(ch.take()); a} < 5) {
+    while ({ a = await(ch.take()); a } < 5) {
       println(a)
     }
   }
@@ -53,7 +53,7 @@ object SelectTest extends App {
 
   val r = async {
     await(Channel.select(ch, t)) match {
-      case (`t`, _) => println("timeout")
+      case (`t`, _)           => println("timeout")
       case (`ch`, value: Int) => await(out.put(value.toString)),
     }
     await(out.take())
@@ -62,7 +62,6 @@ object SelectTest extends App {
   println(r)
 
 }
-
 
 object Select2Test extends App {
 
@@ -78,18 +77,26 @@ object Select2Test extends App {
   //  }
 
   Channel.select2(
-    t -> {u: Unit => println("timeout")},
-    ch -> {v: Int => println(v); out.put(v.toString); ()}
+    t -> { u: Unit =>
+      println("timeout")
+    },
+    ch -> { v: Int =>
+      println(v); out.put(v.toString); ()
+    }
   )
 
   val r = async {
-    await(Channel.select2(
-      t -> {u: Unit => println("timeout")},
-      out -> {s: String => println(s)}
-    ))
+    await(
+      Channel.select2(
+        t -> { u: Unit =>
+          println("timeout")
+        },
+        out -> { s: String =>
+          println(s)
+        }
+      ))
   }
   Await.result(r, 10.seconds)
   println(r)
-
 
 }

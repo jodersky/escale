@@ -5,6 +5,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.concurrent.{Future, Promise}
 
+// https://vimeo.com/100518968
 class Channel[A](capacity: Int) {
   require(capacity >= 0, "capacity must be >= 0")
   import Channel._
@@ -87,8 +88,6 @@ object Channel {
     }(scala.concurrent.ExecutionContext.global)
     c
   }
-
-  //def select(ops: Op[_]*): Unit = ???
 
   def select(channels: Channel[_]*): Future[(Channel[_], Any)] = {
     val flag = new Flag
